@@ -1,0 +1,5 @@
+number i = 9
+action greet is
+    say "Hello!"
+greet
+yesno check = yes
