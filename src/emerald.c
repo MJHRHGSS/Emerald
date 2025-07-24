@@ -17,9 +17,10 @@ typedef struct {
     union {
         char *str;
         double num;
-        int bool, isnull;
+        int boolean, isnull;
     } value;
     tokentype type;
+    int ID, line, whitespace;
 } token;
 typedef struct {
     token *tokens;
@@ -35,7 +36,7 @@ typedef struct {
     union {
         double num;
         char *str;
-        int bool;
+        int boolean;
         struct {
             struct astnode **elements;
             size_t size;
@@ -69,6 +70,8 @@ typedef struct {
         } program;
     };
 } astnode;
+int ids = 0;
+int *idptr = &ids;
 hashmap keywords[20] = {
     {"if", IF},
     {"and", AND},
@@ -114,6 +117,7 @@ void add(tokenslist *l, token item) {
         l->tokens = realloc(l->tokens, l->cap * sizeof(token));
         printf("[ADD] Increased array capacity for safety\n");
     }
+    item.ID = (*idptr)++;
     l->tokens[l->size++] = item;
     printf("[ADD] Added item to array\n");
 }
@@ -231,60 +235,70 @@ void lex(const char *src, tokenslist *tokens) {
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = "(";
                 token.type = LEFT_PAREN;
+                token.line = line;
                 add(tokens, token);
                 break;
             case ')':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = ")";
                 token.type = RIGHT_PAREN;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '[':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = "[";
                 token.type = LEFT_BRACE;
+                token.line = line;
                 add(tokens, token);
                 break;
             case ']':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);               
                 token.value.str = "]";
                 token.type = RIGHT_BRACE;
+                token.line = line;
                 add(tokens, token);
                 break;
             case ',':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = ",";
                 token.type = COMMA;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '.':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = ".";
                 token.type = DOT;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '+':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = "+";
                 token.type = PLUS;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '-':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = "-";
                 token.type = MINUS;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '*':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = "*";
                 token.type = STAR;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '/':
                 printf("[LEX] Found character %c, adding to tokens array\n", c);
                 token.value.str = "/";
                 token.type = SLASH;
+                token.line = line;
                 add(tokens, token);
                 break;
             case '!':
@@ -293,12 +307,14 @@ void lex(const char *src, tokenslist *tokens) {
                     printf("[LEX] Found token !=, adding to tokens array\n");
                     token.value.str = "!=";
                     token.type = BANG_EQ;
+                    token.line = line;
                     add(tokens, token);
                     current++;
                 } else {
                     printf("[LEX] Tokenising as !\n");
                     token.value.str = "!";
                     token.type = BANG;
+                    token.line = line;
                     add(tokens, token);
                 }
                 break;
@@ -308,12 +324,14 @@ void lex(const char *src, tokenslist *tokens) {
                     printf("[LEX] Found token <=, adding to tokens array\n");
                     token.value.str = "<=";
                     token.type = LESS_EQ;
+                    token.line = line;
                     add(tokens, token);
                     current++;
                 } else {
                     printf("[LEX] Tokenising as <\n");
                     token.value.str = "<";
                     token.type = LESS;
+                    token.line = line;
                     add(tokens, token);
                 }
                 break;
@@ -323,12 +341,14 @@ void lex(const char *src, tokenslist *tokens) {
                     printf("[LEX] Found token >=, adding to tokens array\n");
                     token.value.str = ">=";
                     token.type = MORE_EQ;
+                    token.line = line;
                     add(tokens, token);
                     current++;
                 } else { 
                     printf("[LEX] Tokenising as >\n");
                     token.value.str = ">";
                     token.type = MORE;
+                    token.line = line;
                     add(tokens, token);
                 }
                 break;
@@ -338,12 +358,14 @@ void lex(const char *src, tokenslist *tokens) {
                     printf("[LEX] Found token ==, adding to tokens array\n");
                     token.value.str = "==";
                     token.type = EQUALS_EQ;
+                    token.line = line;
                     add(tokens, token);
                     current++;
                 } else {
                     printf("[LEX] Tokenising as =\n");
                     token.value.str = "=";
                     token.type = EQUALS;
+                    token.line = line;
                     add(tokens, token);
                 }
                 break;
@@ -351,6 +373,7 @@ void lex(const char *src, tokenslist *tokens) {
             case '\r':
             case ' ':
                 printf("[LEX] Skipping whitespace\n");
+                token.whitespace++;
                 break;
             case '\n':
                 printf("[LEX] Skipping whitespace\n");
@@ -373,6 +396,7 @@ void lex(const char *src, tokenslist *tokens) {
                 value[current - start] = '\0';
                 token.value.str = strdup(value);
                 token.type = STRING;
+                token.line = line;
                 add(tokens, token);
                 break;
             default:
@@ -393,10 +417,11 @@ void lex(const char *src, tokenslist *tokens) {
                         while (src[current] != '\n' && current <= strlen(src)) current++;
                         break;
                     }
-                    if (type == YES || type == NO) token.value.bool = type == YES;
+                    if (type == YES || type == NO) token.value.boolean = type == YES;
                     else token.value.str = strdup(txt);
                     printf("[LEX] tokentype for identifier: %s\n", nameof(type));
                     token.type = type;
+                    token.line = line;
                     add(tokens, token);
                     if (token.type == NUMBER || token.type == TEXT || token.type == YESNO) {
                         while (src[current] == ' ') current++;
@@ -408,6 +433,7 @@ void lex(const char *src, tokenslist *tokens) {
                         txt[len] = '\0';
                         token.value.str = strdup(txt);
                         token.type = VAR;
+                        token.line = line;
                         add(tokens, token);
                     } else if (token.type == ACTION) {
                         while (src[current] == ' ') current++;
@@ -419,6 +445,7 @@ void lex(const char *src, tokenslist *tokens) {
                         txt[len] = '\0';
                         token.value.str = strdup(txt);
                         token.type = FUNC;
+                        token.line = line;
                         add(tokens, token);
                     }
                 } else if (c >= '0' && c <= '9') {
@@ -431,6 +458,7 @@ void lex(const char *src, tokenslist *tokens) {
                     value[current - start] = '\0';
                     token.value.num = atof(value);
                     token.type = DOUBLE;
+                    token.line = line;
                     add(tokens, token);
                 }
                 else {
@@ -480,7 +508,7 @@ void print_token(token t) {
             break;
         case YES:
         case NO:
-            printf("%d\n", t.value.bool);
+            printf("%d\n", t.value.boolean);
             break;
         default:
             if (t.value.str)
@@ -511,7 +539,7 @@ astnode *make_txt(char *val) {
 astnode *make_bool(int val) {
     astnode *node = malloc(sizeof(astnode));
     node->type = (val) ? YES : NO;
-    node->bool = val;
+    node->boolean = val;
     return node;
 }
 astnode *make_action(int argc, struct astnode **args, char *name, tokentype retval) {
@@ -524,8 +552,9 @@ astnode *make_action(int argc, struct astnode **args, char *name, tokentype retv
     return node;
 }
 void debug(const char *funcname) {printf("[%s] Do you see this?\n", funcname);}
-void parse(tokenslist *tokens) {
-    printf("[PARSE] Parsing...\n");
+astnode **create_ast(tokenslist *tokens) {
+    printf("[CREATE_AST] Creating AST...\n");
+    astnode **node = malloc(sizeof(astnode));
     tokentype priority[4][6] = {
         {ACTION, NUMBER, TEXT, LIST, YESNO, -1},
         {IF, OTHERWISE, REPEAT, FOR, UNTIL, -1},
@@ -533,26 +562,62 @@ void parse(tokenslist *tokens) {
         {-1}
     };
     for (int i = 0; i < tokens->size && !isnull(tokens->tokens[i]); i++) {
-        token *token = &tokens->tokens[i];
+        token *tok = &tokens->tokens[i];
         int group = -1;
         for (int p = 0; priority[p][0] != -1; p++) {
             const tokentype *level = priority[p];
             for (int x = 0; level[x] != -1; x++) {
-                if (token->type == level[x]) {
+                if (tok->type == level[x]) {
                     group = p;
                     break;
                 }
             }
             if (group != -1) break;
         }
-        if (group == -1) printf("[PARSE] tokentype %s not in any prioroties group\n", nameof(token->type));
-        switch (token->type) {
+        if (group == -1) printf("[PARSE] tokentype %s not in any prioroties group\n", nameof(tok->type));
+        switch (tok->type) {
             // TODO: PARSING SETUP DONE (HARD PART)
             // YOU DO THE REST ToT
+            case ACTION:
+                debug("ACTION");
+                int argc, retval, index, is;
+                astnode **args;
+                char *name;
+                tokenslist *actiontoks = malloc(sizeof(tokenslist));
+                actiontoks->cap = 256;
+                actiontoks->size = 0;
+                actiontoks->tokens = malloc(actiontoks->cap * sizeof(token));
+                // Get the sublist for action tokens 
+                for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) /* Found correct ACTION token */ index = i - 1;
+                for (int i = index; i < tokens->size; i++) if (tokens->tokens[i].type == IS && tokens->tokens[i].line == tok->line) is = i;
+                // Create the sublist
+                for (int i = index; i < is; i++) add(actiontoks, tokens->tokens[i]);
+                // Get return value, void is -1
+                for (int i = 0; i < tokens->size; i++) {
+                    tokentype t = tokens->tokens[i].type;
+                    if (t == ACTION) {
+                        t = tokens->tokens[i - 1].type;
+                        if (t == NUMBER || t == TEXT || t == YESNO || t == LIST) retval = t;
+                        else retval = -1;
+                    }
+                }
+                // Get number of arguments
+                argc = (is - index) - 3 /*The 3 are ACTION, IS, and the name*/;
+                if (retval >= 0) argc--; // In case of return value other than VOID
+                // Get the name of the ACTION
+                name = tokens->tokens[index + 1].value.str;
+                // Get arguments
+                int end = 0;
+                for (int i = is + 1; i < tokens->size; i++) {
+                    if (tokens->tokens[i].whitespace == tok->whitespace && tokens->tokens[i].line > tokens->tokens[i - 1].line) end++;
+                    else break;
+                }
+                // TODO: Finish building ACTION AST and change logic to support more helper functions for parsing and AST node creation
             default:
                 break;
         }
     }
+    return node;
 }
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -591,6 +656,6 @@ int main(int argc, char **argv) {
         print_token(tokens->tokens[i]);
     }
     printf("[MAIN] Current tokens capacity: %d, current tokens array size: %d\n", (int)tokens->cap, tokens->size);
-    parse(tokens);
+    astnode **ast = create_ast(tokens);
     return 0;
 }
