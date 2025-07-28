@@ -506,8 +506,13 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
                 add(tokens, token);
                 if ((token->type == NUMBER || token->type == TEXT || token->type == YESNO) && (*start = *current) && tokenize(c, src, token, line, current, start, tokens).type != ACTION) {
                     printf("[TOKENIZE] Found var\n");
+                    for (int i = 0; i < tokens->size && src[i] != ' '; i++) (*current)++;
                     token->type = VAR;
                     token->line = *line;
+                    char val[256];
+                    len = *current - *start;
+                    strncpy(val, src + *start, len);
+                    token->value.str = strdup(val);
                     add(tokens, token);
                 } else if (token->type == ACTION) {
                     while (src[*current] == ' ') (*current)++;
@@ -553,7 +558,8 @@ void lex(char *src, tokenslist *tokens) {
         token token;
         token.whitespace = 0;
         tokenize(c, src, &token, &line, &current, &start, tokens);
-        printf("[LEX] Created token of type: %s, whitespace: %d, line: %d\n", nameof(token.type), token.whitespace, token.line);
+        printf("[LEX] Created token of type: %s, line: %d\n", nameof(token.type), token.line);
+        line++;
     }
 }
 int isemr(char *filename) {
@@ -761,7 +767,7 @@ astnode **create_ast(tokenslist *tokens) {
                 printf("[CREATE_AST] Lexing NUMBER token line...\n");
                 for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) index = i;
                 for (int i = index; i < tokens->size; i++) {if ((tokens->tokens[i - 1].type == DOUBLE || tokens->tokens[i - 1].type == VAR) && tokens->tokens[i - 1].line == tok->line) {eof = i - 1; isinit = (tokens->tokens[i - 1].type == DOUBLE) ? 1 : 0;}}
-                for (int i = index; i < eof + 1; i++) add(numtoks, &tokens->tokens[i]);
+                for (int i = index; i < eof + 1; i++) {debug("TESTTTTTTTTTTTTT"); add(numtoks, &tokens->tokens[i]);}
                 printf("[CREATE_AST] Done!\n");
                 printf("[CREATE_AST] Getting value of NUMBER...\n");
                 if (isinit) {
@@ -772,7 +778,7 @@ astnode **create_ast(tokenslist *tokens) {
                 }
                 printf("[CREATE_AST] Done! Value: %f\n", val);
                 printf("[CREATE] Getting name of NUMBER...\n");
-                name = tokens->tokens[index + 3].value.str;
+                name = tokens->tokens[index + 2].value.str;
                 printf("[CREATE_AST] Done! Name of NUMBER: %s\n", name);
                 astnode *numnode = make_num(val, name);
                 node = &numnode;
