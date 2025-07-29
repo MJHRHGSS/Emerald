@@ -449,9 +449,19 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
         }
         case '\r':
         case ' ':
-        case '\n':
             printf("[TOKENIZE] Skipping whitespace\n");
+            token->type = -1;
+            token->line = *line;
+            token->value.str = " ";
             break;
+        case '\n': {
+            printf("[TOKENIZE] Skipping whitespace\n");
+            token->line = *line;
+            token->type = -1;
+            token->value.str = "\\n";
+            (*line)++;
+            break;
+        }
         case '\t': {
             int whitespace = 0;
             while (src[*current] == '\t') {do {(*current)++; whitespace++;} while (src[*current + 1] == '\t');}
@@ -519,10 +529,11 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
                     *start = *current;
                     while (((src[*current] >= 'A' && src[*current] <= 'Z') || (src[*current] >= 'a' && src[*current] <= 'z') || (src[*current] >= '0' && src[*current] <= '9') || src[*current] == '_') && src[*current] != '\n') (*current)++;
                     printf("[TOKENIZE] Found variable name, start index: %d, end index: %d\n", *start, *current);
+                    char val[256];
                     len = *current - *start;
-                    strncpy(txt, src + *start, len);
+                    strncpy(val, src + *start, len);
                     txt[len] = '\0';
-                    token->value.str = strdup(txt);
+                    token->value.str = strdup(val);
                     token->type = FUNC;
                     token->line = *line;
                     add(tokens, token);
@@ -559,7 +570,6 @@ void lex(char *src, tokenslist *tokens) {
         token.whitespace = 0;
         tokenize(c, src, &token, &line, &current, &start, tokens);
         printf("[LEX] Created token of type: %s, line: %d\n", nameof(token.type), token.line);
-        line++;
     }
 }
 int isemr(char *filename) {
@@ -706,7 +716,7 @@ astnode **create_ast(tokenslist *tokens) {
                 actiontoks->cap = 256;
                 actiontoks->size = 0;
                 actiontoks->tokens = malloc(actiontoks->cap * sizeof(token));
-                printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node..\n");
+                printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
                 printf("[CREATE_AST] Lexing ACTION token line...\n");
                 for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) index = i - 1;
                 for (int i = index; i < tokens->size; i++) if (tokens->tokens[i].type == IS && tokens->tokens[i].line == tok->line) is = i;
@@ -739,7 +749,7 @@ astnode **create_ast(tokenslist *tokens) {
                     else prevl = -1;
                     line = tokens->tokens[i].line;
                     if (line != prevl) {
-                        if (tokens->tokens[i].whitespace == tok->whitespace) end++;
+                        if (tokens->tokens[i].type == WHITESPACE) end++;
                         else break;
                     }
                 }
