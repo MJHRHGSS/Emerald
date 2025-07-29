@@ -794,7 +794,35 @@ astnode **create_ast(tokenslist *tokens) {
                 node = &numnode;
                 printf("[CREATE_AST] Successsfully created AST node of type NUMBER.\n");
                 break;
-            } default:
+            } case TEXT: {
+		printf("[CREATE_AST] Found expression of type: TEXT, initialising variables...\n");
+		char *name, *val;
+		int index, eof, isinit;
+		tokenslist txttoks = malloc(sizeof(tokenslist));
+		txttoks->cap = 256;
+		txttoks->size = 0;
+		txttoks->tokens = malloc(txttoks->cap * sizeof(token));
+		printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
+		printf("[CREATE_AST] Lexing TEXT token line...\n");
+		for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) index = 1;
+		for (int i = index; i < toknes->size; i++) {if ((tokens->tokens[i - 1].type == STRING || tokens->tokens[i - 1].type == VAR) && tokens->tokens[i - 1].line == tok->line) {eof = i - 1; isinit = (tokens->tokens[i - 1].type == TEXT) ? 1 : 0;}}
+		for (int i = index; i < eof + + 1; i++) add(txttoks, &tokens->tokens[i]);
+		printf("[CREATE_AST] Done!\n");
+		if (isinit) {
+		    int first;
+		    for (int i = index; i < eof; i++) {if (strcmp(tokens->tokens[i].value.str, "=") == 0) {first = i; break;}}
+		    char *eq = strntok(tokens, first, eof);
+		    val = tokens->tokens[eof].value.str;
+		}
+		printf("[CREATE_AST] Done! Value: %s\n", val);
+		printf("[CREATE_AST] Getting name of TEXT...\n");
+		name = tokens->tokens[index + 2].value.str;
+		printf("[CREATE_AST] Done! Name of TEXT: %s\n", name);
+		astnode *txtnode = make_text(val, name);
+		node = &txtnode;
+		printf("[CREATE_AST] Successfully created AST node of type TEXT.\n");
+		break;
+	    } default:
                 break;
         }
     }
