@@ -522,6 +522,7 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
                     char val[256];
                     len = *current - *start;
                     strncpy(val, src + *start, len);
+                    val[len] = '\0';
                     token->value.str = strdup(val);
                     add(tokens, token);
                 } else if (token->type == ACTION) {
@@ -760,6 +761,7 @@ astnode **create_ast(tokenslist *tokens) {
                 for (int i = is + 1; i < end + is; i++) {if (!isnull(tokens->tokens[i])) {add(actionblock, &tokens->tokens[i]); printf("[CREATE_AST] Added token %s to action block array.\n", nameof(tokens->tokens[i].type));}}
                 args = create_ast(actionblock);
                 printf("[CREATE_AST] Done!\n");
+                printf("[CREATE_AST] Finalising...\n");
                 astnode *actionnode = make_action(argc, args, name, retval);
                 node = &actionnode;
                 printf("[CREATE_AST] Successfully created AST node of type ACTION.\n");
@@ -776,8 +778,14 @@ astnode **create_ast(tokenslist *tokens) {
                 printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
                 printf("[CREATE_AST] Lexing NUMBER token line...\n");
                 for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) index = i;
-                for (int i = index; i < tokens->size; i++) {if ((tokens->tokens[i - 1].type == DOUBLE || tokens->tokens[i - 1].type == VAR) && tokens->tokens[i - 1].line == tok->line) {eof = i - 1; isinit = (tokens->tokens[i - 1].type == DOUBLE) ? 1 : 0;}}
-                for (int i = index; i < eof + 1; i++) {debug("TESTTTTTTTTTTTTT"); add(numtoks, &tokens->tokens[i]);}
+                for (int i = index; i < tokens->size; i++) {
+                    if ((tokens->tokens[i].type == DOUBLE || tokens->tokens[i].type == VAR) && tokens->tokens[i].line == tok->line) {
+                        eof = i; 
+                        isinit = tokens->tokens[i].type == DOUBLE;
+                        if (tokens->tokens[i].type == DOUBLE || (tokens->tokens[i].type == VAR && tokens->tokens[i + 2].type != DOUBLE)) break;
+                    }
+                }
+                for (int i = index; i < eof + 1; i++) add(numtoks, &tokens->tokens[i]);
                 printf("[CREATE_AST] Done!\n");
                 printf("[CREATE_AST] Getting value of NUMBER...\n");
                 if (isinit) {
@@ -790,39 +798,80 @@ astnode **create_ast(tokenslist *tokens) {
                 printf("[CREATE] Getting name of NUMBER...\n");
                 name = tokens->tokens[index + 2].value.str;
                 printf("[CREATE_AST] Done! Name of NUMBER: %s\n", name);
+                printf("[CREATE_AST] Finalising...\n");
                 astnode *numnode = make_num(val, name);
                 node = &numnode;
-                printf("[CREATE_AST] Successsfully created AST node of type NUMBER.\n");
+                printf("[CREATE_AST] Successfully created AST node of type NUMBER.\n");
                 break;
             } case TEXT: {
-		printf("[CREATE_AST] Found expression of type: TEXT, initialising variables...\n");
-		char *name, *val;
-		int index, eof, isinit;
-		tokenslist txttoks = malloc(sizeof(tokenslist));
-		txttoks->cap = 256;
-		txttoks->size = 0;
-		txttoks->tokens = malloc(txttoks->cap * sizeof(token));
-		printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
-		printf("[CREATE_AST] Lexing TEXT token line...\n");
-		for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) index = 1;
-		for (int i = index; i < toknes->size; i++) {if ((tokens->tokens[i - 1].type == STRING || tokens->tokens[i - 1].type == VAR) && tokens->tokens[i - 1].line == tok->line) {eof = i - 1; isinit = (tokens->tokens[i - 1].type == TEXT) ? 1 : 0;}}
-		for (int i = index; i < eof + + 1; i++) add(txttoks, &tokens->tokens[i]);
-		printf("[CREATE_AST] Done!\n");
-		if (isinit) {
-		    int first;
-		    for (int i = index; i < eof; i++) {if (strcmp(tokens->tokens[i].value.str, "=") == 0) {first = i; break;}}
-		    char *eq = strntok(tokens, first, eof);
-		    val = tokens->tokens[eof].value.str;
-		}
-		printf("[CREATE_AST] Done! Value: %s\n", val);
-		printf("[CREATE_AST] Getting name of TEXT...\n");
-		name = tokens->tokens[index + 2].value.str;
-		printf("[CREATE_AST] Done! Name of TEXT: %s\n", name);
-		astnode *txtnode = make_text(val, name);
-		node = &txtnode;
-		printf("[CREATE_AST] Successfully created AST node of type TEXT.\n");
-		break;
-	    } default:
+		        printf("[CREATE_AST] Found expression of type: TEXT, initialising variables...\n");
+		        char *name, *val;
+		        int index, eof, isinit;
+		        tokenslist *txttoks = malloc(sizeof(tokenslist));
+		        txttoks->cap = 256;
+		        txttoks->size = 0;
+		        txttoks->tokens = malloc(txttoks->cap * sizeof(token));
+		        printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
+		        printf("[CREATE_AST] Lexing TEXT token line...\n");
+		        for (int i = 0; i < tokens->size; i++) if (tokens->tokens[i].ID == tok->ID) index = i;
+		        for (int i = index; i < tokens->size; i++) {
+                    if ((tokens->tokens[i].type == STRING || tokens->tokens[i].type == VAR) && tokens->tokens[i].line == tok->line) {
+                        eof = i;
+                        isinit = tokens->tokens[i].type == STRING;
+                        if (tokens->tokens[i].type == STRING || (tokens->tokens[i].type == VAR && tokens->tokens[i].type != STRING)) break;
+                    }
+                }
+		        for (int i = index; i < eof + 1; i++) add(txttoks, &tokens->tokens[i]);
+		        printf("[CREATE_AST] Done!\n");
+		        if (isinit) {
+		            int first;
+		            for (int i = index; i < eof; i++) {if (strcmp(tokens->tokens[i].value.str, "=") == 0) {first = i; break;}}
+		            val = tokens->tokens[eof].value.str;
+		        }
+		        printf("[CREATE_AST] Done! Value: \"%s\"\n", val);
+		        printf("[CREATE_AST] Getting name of TEXT...\n");
+		        name = tokens->tokens[index + 2].value.str;
+		        printf("[CREATE_AST] Done! Name of TEXT: %s\n", name);
+                printf("[CREATE_AST] Finalising...\n");
+		        astnode *txtnode = make_txt(val, name);
+		        node = &txtnode;
+		        printf("[CREATE_AST] Successfully created AST node of type TEXT.\n");
+		        break;
+	        } case YESNO: {
+                printf("[CREATE_AST] Found expression of type: YESNO, initialising variables...\n");
+                char *name;
+                int index, eof, isinit, val;
+                tokenslist *booltoks = malloc(sizeof(tokenslist));
+                booltoks->cap = 256;
+                booltoks->size = 0;
+                booltoks->tokens = malloc (booltoks->cap * sizeof(token));
+                printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
+                printf("[CREATE_AST] Lexing YESNO token line...\n");
+                for (int i = 0; i < tokens->size; i++) {if (tokens->tokens[i].ID == tok->ID) {index = i; break;}}
+                for (int i = index; i < tokens->size; i++) {
+                    if ((tokens->tokens[i].type == YES || tokens->tokens[i].type == NO || tokens->tokens[i].type == VAR) && tokens->tokens[i].line == tok->line) {
+                        eof = i; 
+                        isinit = tokens->tokens[i].type == YES || tokens->tokens[i].type == NO;
+                        if ((tokens->tokens[i].type == YES || tokens->tokens[i].type == NO) || (tokens->tokens[i].type == VAR && (tokens->tokens[i + 2].type != YES && tokens->tokens[i + 2].type != NO))) break;
+                    }
+                }
+                for (int i = index; i < eof + 1; i++) add(booltoks, &tokens->tokens[i]);
+                printf("[CREATE_AST] Done!\n[CREATE_AST] Getting value of YESNO...\n");
+                if (isinit) {
+                    int first;
+                    for (int i = index; i < eof; i++) {if (strcmp(tokens->tokens[i].value.str, "=") == 0) {first = i; break;}}
+                    val = tokens->tokens[eof].value.boolean;
+                }
+                printf("[CREATE_AST] Done! Value: %d\n", val);
+                printf("[CREATE_AST] Getting name of YESNO...\n");
+                name = tokens->tokens[index + 2].value.str;
+                printf("[CREATE_AST] Done! Name of YESNO: %s\n", name);
+                printf("[CREATE_AST] Finalising...\n");
+                astnode *boolnode = make_bool(val, name);
+                node = &boolnode;
+                printf("[CREATE_AST] Successfully created AST node of type YESNO\n");
+                break;
+            } default:
                 break;
         }
     }
