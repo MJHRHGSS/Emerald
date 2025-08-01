@@ -32,6 +32,21 @@ typedef struct {
     char *key;
     tokentype value;
 } hashmap;
+typedef enum {NUM, STR, BOOL} objtype;
+typedef struct object object;
+typedef struct {
+    size_t cap;
+    int size;
+    object *o;
+} list;
+struct object {
+    union {
+        int boolean;
+        double num;
+        char *str;
+    } val;
+    objtype type;
+};
 typedef struct astnode astnode;
 struct astnode {
     tokentype type;
@@ -54,18 +69,10 @@ struct astnode {
             char *op;
             struct astnode *right;
         } binary;
-        struct {
-            struct astnode *value;
-        } give;
-        struct {
-            struct astnode *condition, *then, *otherwise;
-        } ifstmt;
-        struct {
-            struct astnode *times, *body;
-        } repeat;
-        struct {
-            struct astnode *condition, *body;
-        } until;
+        struct {struct astnode *value;} give;
+        struct {struct astnode *condition, *then, *otherwise;} ifstmt;
+        struct {struct astnode *times, *body;} repeat;
+        struct {struct astnode *condition, *body;} until;
         struct {
             char *name;
             struct astnode **args;
@@ -80,7 +87,7 @@ struct astnode {
 };
 int ids = 0, varids = 0;
 int *idptr = &ids, *varptr = &varids;
-hashmap keywords[20] = {
+hashmap keywords[21] = {
     {"if", IF},
     {"and", AND},
     {"text", TEXT},
@@ -100,6 +107,7 @@ hashmap keywords[20] = {
     {"or", OR},
     {"not", NOT},
     {"is", IS},
+    {"list", LIST},
     {NULL, TOK_EOF}
 };
 hashmap booleans[3] = {
@@ -514,7 +522,7 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
                 token->type = type;
                 token->line = *line;
                 add(tokens, token);
-                if ((token->type == NUMBER || token->type == TEXT || token->type == YESNO) && (*start = *current) && tokenize(c, src, token, line, current, start, tokens).type != ACTION) {
+                if ((token->type == NUMBER || token->type == TEXT || token->type == YESNO || token->type == LIST) && (*start = *current) && tokenize(c, src, token, line, current, start, tokens).type != ACTION) {
                     printf("[TOKENIZE] Found var\n");
                     for (int i = 0; i < tokens->size && src[i] != ' '; i++) (*current)++;
                     token->type = VAR;
@@ -538,6 +546,15 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
                     token->type = FUNC;
                     token->line = *line;
                     add(tokens, token);
+                }
+                if (token->type == LIST) {
+                    printf("[TOKENIZE] Found list\n");
+                    for (int i = 0; i < tokens->size && src[i] != '(' && src[i] != '\n'; i++) (*current)++;
+                    if (src[*current] == '(') {
+                        *start = *current;
+                        for (int i = 0; i < tokens->size && src[i] != ')'; i++) (*current)++;
+
+                    }
                 }
             } else if (c >= '0' && c <= '9') {
                 printf("[TOKENIZE] Found a number, scanning\n");

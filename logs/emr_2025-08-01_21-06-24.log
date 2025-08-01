@@ -1,0 +1,247 @@
+[ISEMR] Checking if file tests/test.emr is emerald... true
+[MAIN] Reading file...
+[MAIN] Finished reading file, initialising tokens array
+[MAIN] Finished initialising tokens array, lexing
+[LEX] Initialising important debuggin variables, start = 0, current = 0, line = 1
+[LEX] Lexing character: n
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 0, end index: 6
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: number
+[GET] Key not found
+[GET] Scanning hashmap for key: number
+[GET] Found key with value: 38, returning
+[LEX] tokentype for identifier: NUMBER
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Found variable name, start index: 7, end index: 8
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: VAR, whitespace: 0, line: 1
+[LEX] Skipping whitespace
+[LEX] Created token of type: VAR, whitespace: 0, line: 1
+[LEX] Lexing character: =
+[LEX] Found character =, scanning...
+[LEX] Tokenising as =
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: EQUALS, whitespace: 0, line: 1
+[LEX] Skipping whitespace
+[LEX] Created token of type: EQUALS, whitespace: 0, line: 1
+[LEX] Lexing character: 9
+[LEX] Found a number, scanning
+[LEX] Finished tokenising number, start index: 11, end index: 12
+[LEX] Adding number to tokens array
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: DOUBLE, whitespace: 0, line: 1
+[LEX] Skipping whitespace
+[LEX] Created token of type: DOUBLE, whitespace: 0, line: 1
+[LEX] Lexing character: a
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 13, end index: 19
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: action
+[GET] Key not found
+[GET] Scanning hashmap for key: action
+[GET] Found key with value: 33, returning
+[LEX] tokentype for identifier: ACTION
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Found variable name, start index: 20, end index: 25
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: FUNC, whitespace: 0, line: 2
+[LEX] Skipping whitespace
+[LEX] Created token of type: FUNC, whitespace: 0, line: 2
+[LEX] Lexing character: i
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 26, end index: 28
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: is
+[GET] Key not found
+[GET] Scanning hashmap for key: is
+[GET] Found key with value: 43, returning
+[LEX] tokentype for identifier: IS
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: IS, whitespace: 0, line: 2
+[LEX] Skipping whitespace
+[LEX] Created token of type: IS, whitespace: 0, line: 2
+[LEX] Skipping whitespace
+[LEX] Created token of type: IS, whitespace: 3, line: 2
+[LEX] Lexing character: s
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 33, end index: 36
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: say
+[GET] Key not found
+[GET] Scanning hashmap for key: say
+[GET] Found key with value: 31, returning
+[LEX] tokentype for identifier: SAY
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: SAY, whitespace: 0, line: 3
+[LEX] Skipping whitespace
+[LEX] Created token of type: SAY, whitespace: 0, line: 3
+[LEX] Lexing character: "
+[LEX] Found string literal, scanning
+[LEX] Finished tokenizing string, start index: 37, end index: 45
+[LEX] Adding string literal to tokens array
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: STRING, whitespace: 0, line: 3
+[LEX] Skipping whitespace
+[LEX] Created token of type: STRING, whitespace: 0, line: 3
+[LEX] Lexing character: g
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 46, end index: 51
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: greet
+[GET] Key not found
+[GET] Scanning hashmap for key: greet
+[GET] Key not found
+[LEX] tokentype for identifier: IDENTIFIER
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: IDENTIFIER, whitespace: 0, line: 4
+[LEX] Skipping whitespace
+[LEX] Created token of type: IDENTIFIER, whitespace: 0, line: 4
+[LEX] Lexing character: y
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 52, end index: 57
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: yesno
+[GET] Key not found
+[GET] Scanning hashmap for key: yesno
+[GET] Found key with value: 39, returning
+[LEX] tokentype for identifier: YESNO
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Found variable name, start index: 58, end index: 63
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: VAR, whitespace: 0, line: 5
+[LEX] Skipping whitespace
+[LEX] Created token of type: VAR, whitespace: 0, line: 5
+[LEX] Lexing character: =
+[LEX] Found character =, scanning...
+[LEX] Tokenising as =
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: EQUALS, whitespace: 0, line: 5
+[LEX] Skipping whitespace
+[LEX] Created token of type: EQUALS, whitespace: 0, line: 5
+[LEX] Lexing character: y
+[LEX] Found an identifier, scanning
+[LEX] Finished tokenising identifier, start index: 66, end index: 69
+[LEX] Adding identifier to tokens array
+[GET] Scanning hashmap for key: yes
+[GET] Found key with value: 21, returning
+[LEX] tokentype for identifier: YES
+[ADD] Adding item to array
+[ADD] Added item to array
+[LEX] Created token of type: YES, whitespace: 0, line: 5
+[LEX] Skipping whitespace
+[LEX] Created token of type: YES, whitespace: 0, line: 5
+[ADD] Adding item to array
+[ADD] Added item to array
+[MAIN] Finished lexing, found tokens:
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: NUMBER, value: 'number'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: VAR, value: 'i'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: EQUALS, value: '='
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: DOUBLE, value: 9.000000
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: ACTION, value: 'action'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: FUNC, value: 'greet'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IS, value: 'is'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: SAY, value: 'say'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: STRING, value: '"Hello!"'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IDENTIFIER, value: 'greet'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: YESNO, value: 'yesno'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: VAR, value: 'check'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: EQUALS, value: '='
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: YES, value: 1
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: EOF, value: NULL
+[MAIN] Current tokens capacity: 256, current tokens array size: 15
+[CREATE_AST] Creating AST...
+[ISNULL] Checking if token is null... false
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype VAR not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype EQUALS not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype DOUBLE not in any prioroties group
+[ISNULL] Checking if token is null... false
+[CREATE_AST] Found expression of type: ACTION, initialising variables...
+[CREATE_AST] Done!
+[CREATE_AST] Creating AST node..
+[CREATE_AST] Lexing ACTION token line...
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Done!
+[CREATE_AST] Getting return value of ACTION...
+[CREATE_AST] Done! Return value: void
+[CREATE_AST] Finding number of arguments...
+[CREATE_AST] Done! Number of arguments: 0
+[CREATE_AST] Finding the name of the ACTION...
+[CREATE_AST] Done! Name of ACTION: greet
+[CREATE_AST] Getting code block...
+[ISNULL] Checking if token is null... false
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Added token SAY to action block array.
+[ISNULL] Checking if token is null... false
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Added token STRING to action block array.
+[ISNULL] Checking if token is null... false
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Added token IDENTIFIER to action block array.
+[CREATE_AST] Creating AST...
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype SAY not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype STRING not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[CREATE_AST] Done!
+[CREATE_AST] Successfully created AST node of type ACTION.
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype FUNC not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IS not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype SAY not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype STRING not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[ISNULL] Checking if token is null... false
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype VAR not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype EQUALS not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype YES not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype EOF not in any prioroties group
