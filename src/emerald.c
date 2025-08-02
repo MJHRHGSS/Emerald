@@ -8,7 +8,7 @@ typedef enum {
     COMMA, DOT, PLUS, MINUS, STAR, SLASH,
     BANG, MORE, LESS, EQUALS,
     BANG_EQ, MORE_EQ, LESS_EQ, EQUALS_EQ,
-    IDENTIFIER, STRING, DOUBLE,
+    IDENTIFIER, STRING, DOUBLE, ARRAY,
     YES, NO,
     AND, OR, NOT, OTHERWISE, REPEAT, UNTIL, FOR, NOTHING, SAY, COMMENT, ACTION, GIVE, HAVE, IF, TEXT, NUMBER, YESNO, LIST, VAR, FUNC, IS,
     WHITESPACE,
@@ -56,6 +56,7 @@ struct astnode {
                 double num;
                 char *str;
                 int boolean;
+                list l;
             } val;
             char *name;
             int id;
@@ -261,54 +262,56 @@ char *nameof(tokentype t) {
         case 20:
             return "DOUBLE";
         case 21:
-            return "YES";
+            return "ARRAY";
         case 22:
-            return "NO";
+            return "YES";
         case 23:
-            return "AND";
+            return "NO";
         case 24:
-            return "OR";
+            return "AND";
         case 25:
-            return "NOT";
+            return "OR";
         case 26:
-            return "OTHERWISE";
+            return "NOT";
         case 27:
-            return "REPEAT";
+            return "OTHERWISE";
         case 28:
-            return "UNTIL";
+            return "REPEAT";
         case 29:
-            return "FOR";
+            return "UNTIL";
         case 30:
-            return "NOTHING";
+            return "FOR";
         case 31:
-            return "SAY";
+            return "NOTHING";
         case 32:
-            return "COMMENT";
+            return "SAY";
         case 33:
-            return "ACTION";
+            return "COMMENT";
         case 34:
-            return "GIVE";
+            return "ACTION";
         case 35:
-            return "HAVE";
+            return "GIVE";
         case 36:
-            return "IF";
+            return "HAVE";
         case 37:
-            return "TEXT";
+            return "IF";
         case 38:
-            return "NUMBER";
+            return "TEXT";
         case 39:
-            return "YESNO";
+            return "NUMBER";
         case 40:
-            return "LIST";
+            return "YESNO";
         case 41:
-            return "VAR";
+            return "LIST";
         case 42:
-            return "FUNC";
+            return "VAR";
         case 43:
-            return "IS";
+            return "FUNC";
         case 44:
-            return "WHITESPACE";
+            return "IS";
         case 45:
+            return "WHITESPACE";
+        case 46:
             return "EOF";
         default:
             return "NULL";
@@ -547,15 +550,6 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
                     token->line = *line;
                     add(tokens, token);
                 }
-                if (token->type == LIST) {
-                    printf("[TOKENIZE] Found list\n");
-                    for (int i = 0; i < tokens->size && src[i] != '(' && src[i] != '\n'; i++) (*current)++;
-                    if (src[*current] == '(') {
-                        *start = *current;
-                        for (int i = 0; i < tokens->size && src[i] != ')'; i++) (*current)++;
-
-                    }
-                }
             } else if (c >= '0' && c <= '9') {
                 printf("[TOKENIZE] Found a number, scanning\n");
                 while (src[*current] >= '0' && src[*current] <= '9') (*current)++;
@@ -637,11 +631,19 @@ void print_token(token t) {
         break;
     }
 }
+astnode *make_list(list val, char *name) {
+    astnode *node = malloc(sizeof(astnode));
+    node->type = ARRAY;
+    node->var.val.l = val;
+    node->var.id = (*varptr)++;
+    node->var.name = name;
+    return node;
+}
 astnode *make_num(double val, char *name) {
     astnode *node = malloc(sizeof(astnode));
     node->type = DOUBLE;
     node->var.val.num = val;
-    node->var.id = *varptr++;
+    node->var.id = (*varptr)++;
     node->var.name = name;
     return node;
 }
@@ -655,7 +657,7 @@ astnode *make_txt(char *val, char *name) {
     astnode *node = malloc(sizeof(astnode));
     node->type = STRING;
     node->var.val.str = val;
-    node->var.id = *varptr++;
+    node->var.id = (*varptr)++;
     node->var.name = name;
     return node;
 }
@@ -663,7 +665,7 @@ astnode *make_bool(int val, char *name) {
     astnode *node = malloc(sizeof(astnode));
     node->type = (val) ? YES : NO;
     node->var.val.boolean = val;
-    node->var.id = *varptr++;
+    node->var.id = (*varptr)++;
     node->var.name = name;
     return node;
 }
@@ -872,13 +874,9 @@ astnode **create_ast(tokenslist *tokens) {
                         if ((tokens->tokens[i].type == YES || tokens->tokens[i].type == NO) || (tokens->tokens[i].type == VAR && (tokens->tokens[i + 2].type != YES && tokens->tokens[i + 2].type != NO))) break;
                     }
                 }
-                for (int i = index; i < eof + 1; i++) add(booltoks, &tokens->tokens[i]);
+                for (int i = index; i <= eof; i++) add(booltoks, &tokens->tokens[i]);
                 printf("[CREATE_AST] Done!\n[CREATE_AST] Getting value of YESNO...\n");
-                if (isinit) {
-                    int first;
-                    for (int i = index; i < eof; i++) {if (strcmp(tokens->tokens[i].value.str, "=") == 0) {first = i; break;}}
-                    val = tokens->tokens[eof].value.boolean;
-                }
+                if (isinit) val = tokens->tokens[eof].value.boolean;
                 printf("[CREATE_AST] Done! Value: %d\n", val);
                 printf("[CREATE_AST] Getting name of YESNO...\n");
                 name = tokens->tokens[index + 2].value.str;
@@ -888,6 +886,30 @@ astnode **create_ast(tokenslist *tokens) {
                 node = &boolnode;
                 printf("[CREATE_AST] Successfully created AST node of type YESNO\n");
                 break;
+            } case LIST: {
+                printf("[CREATE_AST] Found expression of type LIST, initialising variables...\n");
+                char *name;
+                int index, eof, arrind, arreof, isinit;
+                list val;
+                tokenslist *listtoks = malloc(sizeof(tokenslist));
+                listtoks->cap = 256;
+                listtoks->size = 0;
+                listtoks->tokens = malloc(listtoks->cap * sizeof(token));
+                printf("[CREATE_AST] Done!\n[CREATE_AST] Creating AST node...\n");
+                printf("[CREATE_AST] Lexing LIST token line...\n");
+                for (int i = 0; i < tokens->size; i++) {if (tokens->tokens[i].ID == tok->ID) {index = i; break;}}
+                for (int i = index; i < tokens->size; i++) {
+                    if ((tokens->tokens[i].type == ARRAY || tokens->tokens[i].type == VAR) && tokens->tokens[i].line == tok->line) {
+                        eof = i;
+                        isinit = tokens->tokens[i].type == ARRAY;
+                        if (tokens->tokens[i].type == ARRAY || (tokens->tokens[i].type == VAR && tokens->tokens[i + 2].type != ARRAY)) break;
+                    }
+                }
+                for (int i = index; i <= eof; i++) add(listtoks, &tokens->tokens[i]);
+                printf("[CREATE_AST] Done!\n[CREATE_AST] Getting value of LIST...\n");
+                if (isinit) {
+                    
+                }
             } default:
                 break;
         }
