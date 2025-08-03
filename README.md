@@ -10,7 +10,7 @@ Emerald is a kid-friendly interpreted language scripting language built to be cl
 
 ```bash
 git clone https://github.com/MJRHGSS/Emerald.git
-sudo sh "~/Emerald/scripts/install/install.sh"
+sudo sh "$HOME/Emerald/scripts/install/install.sh"
 ```
 
 ### Windows
