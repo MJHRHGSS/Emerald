@@ -35,7 +35,7 @@ C:\Users\%USERNAME%\Emerald\scripts\install\install.bat
 
 ## Run
 
-The Emerald interpreter follow this simple command syntax:
+The Emerald interpreter follows this simple command syntax:
 
 ```bash
 emr <file.emr> [--log file.log] [--version] [--help]
