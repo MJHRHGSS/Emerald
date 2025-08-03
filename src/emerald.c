@@ -11,7 +11,7 @@ typedef enum {
     IDENTIFIER, STRING, DOUBLE, ARRAY,
     YES, NO,
     AND, OR, NOT, OTHERWISE, REPEAT, UNTIL, FOR, NOTHING, SAY, COMMENT, ACTION, GIVE, HAVE, IF, TEXT, NUMBER, YESNO, LIST, VAR, FUNC, IS,
-    WHITESPACE,
+    WHITESPACE, NEWLINE,
     TOK_EOF
 } tokentype;
 typedef struct {
@@ -32,7 +32,7 @@ typedef struct {
     char *key;
     tokentype value;
 } hashmap;
-typedef enum {NUM, STR, BOOL} objtype;
+typedef enum {NUM, STR, BOOL, LI, CHAR} objtype;
 typedef struct object object;
 typedef struct {
     size_t cap;
@@ -44,6 +44,8 @@ struct object {
         int boolean;
         double num;
         char *str;
+        char c;
+        list l;
     } val;
     objtype type;
 };
@@ -212,6 +214,16 @@ void add(tokenslist *l, token *item) {
     l->tokens[l->size++] = item[0];
     printf("[ADD] Added item to array\n");
 }
+void listadd(list *l, object val) {
+    printf("[LISTADD] Adding item to array\n");
+    if (l->size >= l->cap) {
+        l->cap *= 2;
+        l->o = realloc(l->o, l->cap * sizeof(object));
+        printf("[LISTADD] Increased array capacity for safety\n");
+    }
+    l->o[l->size++] = val;
+    printf("[LISTADD] Added item to array\n");
+}
 int isnull(token item) {
     printf("[ISNULL] Checking if token is null... %s\n", (item.value.isnull && item.type == TOK_EOF) ? "true" : "false");
     if (item.value.isnull && item.type == TOK_EOF) return 1;
@@ -312,6 +324,8 @@ char *nameof(tokentype t) {
         case 45:
             return "WHITESPACE";
         case 46:
+            return "NEWLINE";
+        case 47:
             return "EOF";
         default:
             return "NULL";
@@ -468,7 +482,7 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
         case '\n': {
             printf("[TOKENIZE] Skipping whitespace\n");
             token->line = *line;
-            token->type = -1;
+            token->type = NEWLINE;
             token->value.str = "\\n";
             (*line)++;
             break;
@@ -701,6 +715,59 @@ char *strntok(tokenslist *tokens, int first, int eof) {
     }
     return result;
 }
+object lexlist(list *l, tokenslist *toks, int idx, int eof) {
+    object obj = *(object *)malloc(sizeof(object));
+    tokentype t = toks->tokens[idx].type;
+    switch (t) {
+        case DOUBLE:{
+            object *o = malloc(sizeof(object));
+            o->type = NUM;
+            o->val.num = toks->tokens[idx].value.num;
+            listadd(l, *o);
+            obj = *o;
+            break;
+        } case STRING:{
+            object *o = malloc(sizeof(object));
+            o->type = STR;
+            o->val.num = toks->tokens[idx].value.num;
+            listadd(l, *o);
+            obj = *o;
+            break;
+        } case YESNO:{
+            object *o = malloc(sizeof(object));
+            o->type = BOOL;
+            o->val.boolean = toks->tokens[idx].value.boolean;
+            listadd(l, *o);
+            obj = *o;
+            break;
+        } case LEFT_PAREN:{
+            int current = 0;
+            list li = *(list *)malloc(sizeof(list));
+            li.size = 0;
+            li.cap = 256;
+            li.o = malloc(li.cap * sizeof(object));
+            for (int i = eof; i > idx; i--) {
+                current++;
+                if (toks->tokens[i + 1].type == RIGHT_PAREN) break;
+            }
+            for (int i = idx; i < current; i++) listadd(&li, lexlist(l, toks, idx, current));
+            object *o = malloc(sizeof(object));
+            o->type = LI;
+            o->val.l = li;
+            listadd(l, *o);
+            obj = *o;
+            break;
+        } case COMMA:
+        case NEWLINE:
+        case WHITESPACE:
+            break;
+        default:{
+            printf("[LEXLIST] Unknown token: %s\n", nameof(t));
+            break;
+        }
+    }
+    return obj;
+}
 astnode **create_ast(tokenslist *tokens) {
     printf("[CREATE_AST] Creating AST...\n");
     astnode **node = malloc(sizeof(astnode));
@@ -900,16 +967,27 @@ astnode **create_ast(tokenslist *tokens) {
                 for (int i = 0; i < tokens->size; i++) {if (tokens->tokens[i].ID == tok->ID) {index = i; break;}}
                 for (int i = index; i < tokens->size; i++) {
                     if ((tokens->tokens[i].type == ARRAY || tokens->tokens[i].type == VAR) && tokens->tokens[i].line == tok->line) {
-                        eof = i;
-                        isinit = tokens->tokens[i].type == ARRAY;
-                        if (tokens->tokens[i].type == ARRAY || (tokens->tokens[i].type == VAR && tokens->tokens[i + 2].type != ARRAY)) break;
+                        isinit = tokens->tokens[i].type == LEFT_PAREN;
+                        if (tokens->tokens[i].type == LEFT_PAREN || (tokens->tokens[i].type == VAR && tokens->tokens[i + 2].type != LEFT_PAREN)) break;
                     }
                 }
-                for (int i = index; i <= eof; i++) add(listtoks, &tokens->tokens[i]);
+                for (int i = index; i < tokens->size; i++) {if (tokens->tokens[i].type == NEWLINE) {eof = i; break;}}
+                for (int i = index; i < eof; i++) add(listtoks, &tokens->tokens[i]);
                 printf("[CREATE_AST] Done!\n[CREATE_AST] Getting value of LIST...\n");
                 if (isinit) {
-                    
+                    int leftparen, rightparen;
+                    for (int i = index; i < tokens->size; i++) {if (tokens->tokens[i].type == LEFT_PAREN) {leftparen = i; break;}}
+                    for (int i = eof; i < tokens->size; i--) {if (tokens->tokens[i].type == RIGHT_PAREN) {rightparen = i; break;}}
+                    for (int i = leftparen + 1; i < rightparen; i++) lexlist(&val, tokens, i, rightparen);
                 }
+                printf("[CREATE_AST] Done!\n[CREATE_AST] Getting name of LIST...\n");
+                name = tokens->tokens[index + 2].value.str;
+                printf("[CREATE_AST] Done! Name of LIST: %s\n", name);
+                printf("[CREATE_AST] Finalising...\n");
+                astnode *listnode = make_list(val, name);
+                node = &listnode;
+                printf("[CREATE_AST] Successfully created AST node of type LIST\n");
+                break;
             } default:
                 break;
         }

@@ -3,3 +3,4 @@ action greet is
     say "Hello!"
 greet
 yesno check = yes
+list l = ("hi")
