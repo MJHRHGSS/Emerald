@@ -76,7 +76,7 @@ say "str=[str], num=[num], bool=[bool], c=[c], l=[l]"
 ### Functions (actions)
 
 ```emr
-number action number a, number b is
+number action add number a, number b is
     give a + b
 
 say "1+1=[add 1, 1]"
