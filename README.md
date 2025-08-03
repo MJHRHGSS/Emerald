@@ -84,7 +84,7 @@ say "1+1=[add 1, 1]"
 comment actions have return types, you can remove the type to make a void action
 ```
 
-### if statements
+### If statements
 
 ```emr
 if CONDITION or (CONDITION and CONDITION) then
@@ -95,7 +95,7 @@ otherwise then
     ...
 ```
 
-### loops
+### Loops
 
 ```emr
 repeat 8 times
