@@ -1,6 +1,6 @@
 # Emerald
 
-Emerald is a kid-friendly interpreted language scripting language built to be clean, expressive, and powerful. Designed for quick scripts, configuration, and teaching.
+Emerald is a kid-friendly interpreted scripting language built to be clean, expressive, and powerful. It's designed for quick scripts, configuration, and teaching.
 
 ---
 
