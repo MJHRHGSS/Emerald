@@ -483,8 +483,9 @@ token tokenize(char c, char *src, token *token, int *line, int *current, int *st
             printf("[TOKENIZE] Skipping whitespace\n");
             token->line = *line;
             token->type = NEWLINE;
-            token->value.str = "\\n";
+            token->value.str = "\n";
             (*line)++;
+            add(tokens, token);
             break;
         }
         case '\t': {
@@ -909,11 +910,7 @@ astnode **create_ast(tokenslist *tokens) {
                 }
 		        for (int i = index; i < eof + 1; i++) add(txttoks, &tokens->tokens[i]);
 		        printf("[CREATE_AST] Done!\n");
-		        if (isinit) {
-		            int first;
-		            for (int i = index; i < eof; i++) {if (strcmp(tokens->tokens[i].value.str, "=") == 0) {first = i; break;}}
-		            val = tokens->tokens[eof].value.str;
-		        }
+		        if (isinit) val = tokens->tokens[eof].value.str;
 		        printf("[CREATE_AST] Done! Value: \"%s\"\n", val);
 		        printf("[CREATE_AST] Getting name of TEXT...\n");
 		        name = tokens->tokens[index + 2].value.str;
@@ -972,6 +969,7 @@ astnode **create_ast(tokenslist *tokens) {
                     }
                 }
                 for (int i = index; i < tokens->size; i++) {if (tokens->tokens[i].type == NEWLINE) {eof = i; break;}}
+                printf("%d\n",eof);
                 for (int i = index; i < eof; i++) add(listtoks, &tokens->tokens[i]);
                 printf("[CREATE_AST] Done!\n[CREATE_AST] Getting value of LIST...\n");
                 if (isinit) {

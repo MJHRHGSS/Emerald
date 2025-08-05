@@ -1,0 +1,426 @@
+[ISEMR] Checking if file tests\test.emr is emerald... true
+[MAIN] Reading file...
+[MAIN] Finished reading file, initialising tokens array
+[MAIN] Finished initialising tokens array, lexing
+[LEX] Initialising important debugging variables, start = 0, current = 0, line = 1
+[TOKENIZE] Lexing character: n
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 0, end index: 6
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: number
+[GET] Key not found
+[GET] Scanning hashmap for key: number
+[GET] Found key with value: 39, returning
+[TOKENIZE] tokentype for identifier: NUMBER
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 6, end index: 6
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: 
+[GET] Key not found
+[GET] Scanning hashmap for key: 
+[GET] Key not found
+[TOKENIZE] tokentype for identifier: IDENTIFIER
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[TOKENIZE] Found var
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: VAR, line: 1
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 1
+[TOKENIZE] Lexing character: =
+[TOKENIZE] Found character =, scanning...
+[TOKENIZE] Tokenising as =
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: EQUALS, line: 1
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 1
+[TOKENIZE] Lexing character: 9
+[TOKENIZE] Found a number, scanning
+[TOKENIZE] Finished tokenising number, start index: 11, end index: 12
+[TOKENIZE] Adding number to tokens array
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: DOUBLE, line: 1
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NEWLINE, line: 1
+[TOKENIZE] Lexing character: a
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 13, end index: 19
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: action
+[GET] Key not found
+[GET] Scanning hashmap for key: action
+[GET] Found key with value: 34, returning
+[TOKENIZE] tokentype for identifier: ACTION
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Found variable name, start index: 20, end index: 25
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: FUNC, line: 2
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 2
+[TOKENIZE] Lexing character: i
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 26, end index: 28
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: is
+[GET] Key not found
+[GET] Scanning hashmap for key: is
+[GET] Found key with value: 44, returning
+[TOKENIZE] tokentype for identifier: IS
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: IS, line: 2
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NEWLINE, line: 2
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 3
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 3
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 3
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 3
+[TOKENIZE] Lexing character: s
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 33, end index: 36
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: say
+[GET] Key not found
+[GET] Scanning hashmap for key: say
+[GET] Found key with value: 32, returning
+[TOKENIZE] tokentype for identifier: SAY
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: SAY, line: 3
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 3
+[TOKENIZE] Lexing character: "
+[TOKENIZE] Found string literal, scanning
+[TOKENIZE] Finished tokenizing string, start index: 37, end index: 45
+[TOKENIZE] Adding string literal to tokens array
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: STRING, line: 3
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NEWLINE, line: 3
+[TOKENIZE] Lexing character: g
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 46, end index: 51
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: greet
+[GET] Key not found
+[GET] Scanning hashmap for key: greet
+[GET] Key not found
+[TOKENIZE] tokentype for identifier: IDENTIFIER
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: IDENTIFIER, line: 4
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NEWLINE, line: 4
+[TOKENIZE] Lexing character: y
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 52, end index: 57
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: yesno
+[GET] Key not found
+[GET] Scanning hashmap for key: yesno
+[GET] Found key with value: 40, returning
+[TOKENIZE] tokentype for identifier: YESNO
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 57, end index: 57
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: 
+[GET] Key not found
+[GET] Scanning hashmap for key: 
+[GET] Key not found
+[TOKENIZE] tokentype for identifier: IDENTIFIER
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[TOKENIZE] Found var
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: VAR, line: 5
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 5
+[TOKENIZE] Lexing character: =
+[TOKENIZE] Found character =, scanning...
+[TOKENIZE] Tokenising as =
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: EQUALS, line: 5
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NULL, line: 5
+[TOKENIZE] Lexing character: y
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 66, end index: 69
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: yes
+[GET] Found key with value: 22, returning
+[TOKENIZE] tokentype for identifier: YES
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: YES, line: 5
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NEWLINE, line: 5
+[TOKENIZE] Lexing character: l
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 70, end index: 74
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: list
+[GET] Key not found
+[GET] Scanning hashmap for key: list
+[GET] Found key with value: 41, returning
+[TOKENIZE] tokentype for identifier: LIST
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 74, end index: 74
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: 
+[GET] Key not found
+[GET] Scanning hashmap for key: 
+[GET] Key not found
+[TOKENIZE] tokentype for identifier: IDENTIFIER
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[TOKENIZE] Found var
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: VAR, line: 6
+[TOKENIZE] Lexing character: "
+[TOKENIZE] Found string literal, scanning
+[TOKENIZE] Finished tokenizing string, start index: 80, end index: 84
+[TOKENIZE] Adding string literal to tokens array
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: STRING, line: 6
+[TOKENIZE] Lexing character: )
+[TOKENIZE] Found character ), adding to tokens array
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: RIGHT_PAREN, line: 6
+[TOKENIZE] Skipping whitespace
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: NEWLINE, line: 6
+[TOKENIZE] Lexing character: E
+[TOKENIZE] Found an identifier, scanning
+[TOKENIZE] Finished tokenising identifier, start index: 86, end index: 87
+[TOKENIZE] Adding identifier to tokens array
+[GET] Scanning hashmap for key: E
+[GET] Key not found
+[GET] Scanning hashmap for key: E
+[GET] Key not found
+[TOKENIZE] tokentype for identifier: IDENTIFIER
+[ADD] Adding item to array
+[ADD] Added item to array
+[TOKENIZE] Done tokenizing, returning token.
+[LEX] Created token of type: IDENTIFIER, line: 7
+[ADD] Adding item to array
+[ADD] Added item to array
+[MAIN] Finished lexing, found tokens:
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: NUMBER, value: 'number'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IDENTIFIER, value: ''
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: VAR, value: ' i'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: EQUALS, value: '='
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: DOUBLE, value: 9.000000
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: ACTION, value: 'action'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: FUNC, value: 'greet'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IS, value: 'is'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: SAY, value: 'say'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: STRING, value: '"Hello!"'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IDENTIFIER, value: 'greet'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: YESNO, value: 'yesno'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IDENTIFIER, value: ''
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: VAR, value: ' check'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: EQUALS, value: '='
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: YES, value: 1
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: LIST, value: 'list'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IDENTIFIER, value: ''
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: VAR, value: ' l = ('
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: STRING, value: '"hi"'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: RIGHT_PAREN, value: ')'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: IDENTIFIER, value: 'E'
+[ISNULL] Checking if token is null... false
+[PRINT_TOKEN] Token type: EOF, value: NULL
+[MAIN] Current tokens capacity: 256, current tokens array size: 23
+[CREATE_AST] Creating AST...
+[ISNULL] Checking if token is null... false
+[CREATE_AST] Found expression of type: NUMBER, initialising variables...
+[CREATE_AST] Done!
+[CREATE_AST] Creating AST node...
+[CREATE_AST] Lexing NUMBER token line...
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Done!
+[CREATE_AST] Getting value of NUMBER...
+[CREATE_AST] Done! Value: 9.000000
+[CREATE] Getting name of NUMBER...
+[CREATE_AST] Done! Name of NUMBER:  i
+[CREATE_AST] Finalising...
+[CREATE_AST] Successfully created AST node of type NUMBER.
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype VAR not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype EQUALS not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype DOUBLE not in any prioroties group
+[ISNULL] Checking if token is null... false
+[CREATE_AST] Found expression of type: ACTION, initialising variables...
+[CREATE_AST] Done!
+[CREATE_AST] Creating AST node...
+[CREATE_AST] Lexing ACTION token line...
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Done!
+[CREATE_AST] Getting return value of ACTION...
+[CREATE_AST] Done! Return value: void
+[CREATE_AST] Finding number of arguments...
+[CREATE_AST] Done! Number of arguments: 0
+[CREATE_AST] Finding the name of the ACTION...
+[CREATE_AST] Done! Name of ACTION: greet
+[CREATE_AST] Getting code block...
+[CREATE_AST] Creating AST...
+[CREATE_AST] Done!
+[CREATE_AST] Finalising...
+[CREATE_AST] Successfully created AST node of type ACTION.
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype FUNC not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IS not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype SAY not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype STRING not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[ISNULL] Checking if token is null... false
+[CREATE_AST] Found expression of type: YESNO, initialising variables...
+[CREATE_AST] Done!
+[CREATE_AST] Creating AST node...
+[CREATE_AST] Lexing YESNO token line...
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[ADD] Adding item to array
+[ADD] Added item to array
+[CREATE_AST] Done!
+[CREATE_AST] Getting value of YESNO...
+[CREATE_AST] Done! Value: 1
+[CREATE_AST] Getting name of YESNO...
+[CREATE_AST] Done! Name of YESNO:  check
+[CREATE_AST] Finalising...
+[CREATE_AST] Successfully created AST node of type YESNO
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype VAR not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype EQUALS not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype YES not in any prioroties group
+[ISNULL] Checking if token is null... false
+[CREATE_AST] Found expression of type LIST, initialising variables...
+[CREATE_AST] Done!
+[CREATE_AST] Creating AST node...
+[CREATE_AST] Lexing LIST token line...
+-109801472
+[CREATE_AST] Done!
+[CREATE_AST] Getting value of LIST...
+[CREATE_AST] Done!
+[CREATE_AST] Getting name of LIST...
+[CREATE_AST] Done! Name of LIST:  l = (
+[CREATE_AST] Finalising...
+[CREATE_AST] Successfully created AST node of type LIST
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype VAR not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype STRING not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype RIGHT_PAREN not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype IDENTIFIER not in any prioroties group
+[ISNULL] Checking if token is null... false
+[PARSE] tokentype EOF not in any prioroties group
